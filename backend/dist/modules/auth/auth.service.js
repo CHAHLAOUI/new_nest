@@ -5,52 +5,41 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const jwt_1 = require("@nestjs/jwt");
-const bcrypt = require("bcrypt");
-const user = {
-    id: 1,
-    username: "testuser",
-    password: "$2b$10$Q9Qw8Qw8Qw8Qw8Qw8Qw8QeQw8Qw8Qw8Qw8Qw8Qw8Qw8Qw8Qw8Qw8Q",
-};
+const faker_1 = require("@faker-js/faker");
+const Role_1 = require("./interface/Role");
+const common_2 = require("@nestjs/common");
+const jsonwebtoken_1 = require("jsonwebtoken");
 let AuthService = class AuthService {
-    constructor(jwtService) {
-        this.jwtService = jwtService;
+    constructor() {
+        this.users = [
+            {
+                id: faker_1.faker.string.uuid(),
+                userName: "chahlaoui1",
+                password: "chahlaoui@@@@",
+                role: Role_1.Role.Admin,
+            },
+            {
+                id: faker_1.faker.string.uuid(),
+                userName: "chahlaoui2",
+                password: "chahlaoui@@@@",
+                role: Role_1.Role.user,
+            }
+        ];
     }
-    async validateUser(username, pass) {
-        if (username === user.username &&
-            (await bcrypt.compare(pass, user.password))) {
-            const { password } = user, result = __rest(user, ["password"]);
-            return result;
-        }
-        return null;
-    }
-    async login(user) {
-        const payload = { username: user.username, sub: user.id };
-        return {
-            access_token: this.jwtService.sign(payload),
-        };
+    authenticate(authenticateDto) {
+        const user = this.users.find((u) => u.userName === authenticateDto.userName &&
+            u.password === authenticateDto.password);
+        if (!user)
+            throw new common_2.NotFoundException('Invalid credentialss');
+        const token = (0, jsonwebtoken_1.sign)(Object.assign({}, user), 'secretee');
+        return { token, user };
     }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
-    (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [jwt_1.JwtService])
+    (0, common_1.Injectable)()
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map
