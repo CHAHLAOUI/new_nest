@@ -1,0 +1,5 @@
+# dependencies
+/node_modules
+frontend/src/assets/images/*.exe
+# production
+/build
