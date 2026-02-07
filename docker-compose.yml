@@ -1,12 +1,10 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15
     container_name: nest_postgres
     restart: always
     ports:
-      - "5432:5432"
+      - "5432:5432"       # localhost:5432 يقدر يتوصل من NestJS
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
