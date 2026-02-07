@@ -4,7 +4,13 @@ import { AuthenticateDto } from './dto/authenticate.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+    console.log(process.env.DB_HOST);
+    console.log(process.env.DB_PORT);
+    console.log(process.env.DB_USER);
+    console.log(process.env.DB_PASSWORD);
+    console.log(process.env.DB_NAME);
+  }
 
   @Post('login')
   async login(@Body() dto: AuthenticateDto) {
