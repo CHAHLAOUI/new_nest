@@ -20,27 +20,20 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    login(res, authenticateDto) {
-        try {
-            const response = this.authService.authenticate(authenticateDto);
-            return res.status(common_1.HttpStatus.OK).json(response);
-        }
-        catch (error) {
-            return res.status(error.status).json(error.response);
-        }
+    async login(dto) {
+        return this.authService.authenticate(dto);
     }
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.Post)(),
-    __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Body)()),
+    (0, common_1.Post)('login'),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, authenticate_dto_1.AuthenticateDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [authenticate_dto_1.AuthenticateDto]),
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 exports.AuthController = AuthController = __decorate([
-    (0, common_1.Controller)("auth"),
+    (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map
